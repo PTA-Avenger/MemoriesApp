@@ -1,0 +1,37 @@
+﻿<div class="memories-gallery">
+    <h2>Your Memories</h2>
+    @if (Model.MemoryFiles.Any())
+    {
+        <div class="memory-grid">
+            @foreach (var file in Model.MemoryFiles)
+            {
+                <div class="memory-card">
+                    @if (file.FileType.StartsWith("image/"))
+                    {
+                        <img src="@file.FileUrl" alt="@file.FileName" class="memory-thumbnail" />
+                    }
+                    else if (file.FileType.StartsWith("video/"))
+                    {
+                        <video controls class="memory-thumbnail">
+                            <source src="@file.FileUrl" type="@file.FileType">
+                        </video>
+                    }
+                    else if (file.FileType.StartsWith("audio/"))
+                    {
+                        <audio controls>
+                            <source src="@file.FileUrl" type="@file.FileType">
+                        </audio>
+                    }
+                    else
+                    {
+                        <p>@file.FileName</p>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No memories uploaded yet. Start by adding one!</p>
+    }
+</div>

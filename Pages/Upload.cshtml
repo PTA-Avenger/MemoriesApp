@@ -1,0 +1,42 @@
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
+using MemoriesApp.Data;
+
+public class UploadModel : PageModel
+{
+    private readonly MemoryRepository _memoryRepository;
+
+    public UploadModel(MemoryRepository memoryRepository)
+    {
+        _memoryRepository = memoryRepository;
+    }
+
+    [BindProperty]
+    public IFormFile UploadedFile { get; set; }
+
+    public async Task<IActionResult>
+    OnPostAsync()
+    {
+    if (UploadedFile != null)
+    {
+    var memoryFile = new MemoryFile
+    {
+    FileName = UploadedFile.FileName,
+    FileType = UploadedFile.ContentType,
+    FileUrl = $"/uploads/{UploadedFile.FileName}"
+    };
+
+    // Save file metadata to the database
+    await _memoryRepository.AddMemoryAsync(memoryFile);
+
+    // Save the actual file (this is just a basic example)
+    var filePath = Path.Combine("wwwroot/uploads", UploadedFile.FileName);
+    using (var stream = new FileStream(filePath, FileMode.Create))
+    {
+    await UploadedFile.CopyToAsync(stream);
+    }
+    }
+
+    return RedirectToPage("/Index");
+    }
+    }

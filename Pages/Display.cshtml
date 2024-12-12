@@ -1,0 +1,14 @@
+<section>
+    <h2>Our Memories</h2>
+    <!-- Example of a single memory item -->
+    <div class="memory-item">
+        <h3>Memory Title</h3>
+        <p>Description of the memory.</p>
+        <img src="memory.jpg" alt="Memory Image" style="max-width: 100%; border-radius: 10px;">
+        <!-- Remove button -->
+        <form action="/delete" method="post" style="margin-top: 10px;">
+            <input type="hidden" name="memoryId" value="1"> <!-- Memory ID -->
+            <button type="submit" class="remove-button">Remove</button>
+        </form>
+    </div>
+</section>
